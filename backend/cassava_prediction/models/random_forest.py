@@ -1,4 +1,3 @@
-
 # Import libraries
 import pandas as pd
 import numpy as np
@@ -36,6 +35,22 @@ target_range = target_max - target_min
 print(f"Target Range: {target_range:.2f}")
 
 # Calculate the percentage accuracy of my model
-rmse = 1.09
 percentage_accuracy = (1 - (rmse / target_range)) * 100
 print(f"Percentage Accuracy: {percentage_accuracy:.2f}%")
+
+print(data.columns)
+
+# Create a new DataFrame with the same columns as the original dataset
+new_df = pd.DataFrame(columns=X.columns)
+
+# Assign some values to the features
+new_df.loc["cassava mosaic disease severity 6-month evaluation|CO_334:0000194"] = 0.5
+
+# Display the new DataFrame
+new_df
+
+# Make predictions
+predictions = rf.predict(new_df)
+
+# Display the predictions
+predictions
