@@ -6,6 +6,7 @@ from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import train_test_split
 
 # Read the data
+# https://doi.org/10.25502/MJ7B-GG10
 data = pd.read_excel("/content/drive/MyDrive/Yield/2020-04-07t102422phenotype_download.xlsx", usecols=[17, 51, 56])
 
 # Separate the features and the target
@@ -38,19 +39,20 @@ print(f"Target Range: {target_range:.2f}")
 percentage_accuracy = (1 - (rmse / target_range)) * 100
 print(f"Percentage Accuracy: {percentage_accuracy:.2f}%")
 
-print(data.columns)
+# print(data.columns)
 
 # Create a new DataFrame with the same columns as the original dataset
 new_df = pd.DataFrame(columns=X.columns)
 
 # Assign some values to the features
-new_df.loc["cassava mosaic disease severity 6-month evaluation|CO_334:0000194"] = 0.5
+#new_df.loc["germplasmDbId"] = "1177917"
+new_df.loc["cassava mosaic disease severity 6-month evaluation|CO_334:0000194"] = 1
 
 # Display the new DataFrame
-new_df
+print(new_df)
 
 # Make predictions
 predictions = rf.predict(new_df)
 
 # Display the predictions
-predictions
+print("Yield Prediction (t/ha) = ",predictions)
