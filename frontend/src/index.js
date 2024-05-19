@@ -1,20 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { Router, Route, Switch } from 'react-router-dom';
 import './index.css';
 import App from './App';
 import PredictPage from './components/PredictPage'; 
-import { BrowserRouter, Routes, Route } from 'react-router-dom'; 
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<App />} />
-        <Route path="/predict" element={<PredictPage />} /> {/* Add this line */}
-      </Routes>
-    </BrowserRouter>
+    <Router>
+       <Switch>
+            <Route path="/" element={<App />} />
+            <Route path="/predict" element={<PredictPage />} />
+       </Switch>
+    </Router>
   </React.StrictMode>
 );
 
