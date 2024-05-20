@@ -1,7 +1,9 @@
 from django.http import JsonResponse
 from .models import YieldPrediction
-from .random_forest import RandomForestRegressor
+from sklearn.ensemble import RandomForestRegressor
+from django.views.decorators.csrf import csrf_exempt
 
+@csrf_exempt
 def predict_yield(request):
     if request.method == 'POST':
         germplasmDbId = request.POST.get('germplasmDbId')

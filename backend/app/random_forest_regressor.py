@@ -23,16 +23,14 @@ y = data["fresh root yield|CO_334:0000013"]
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 # Create and fit a random forest regressor
-class RandomForestRegressor:
-    def __init__(self):
-        self.rf = RandomForestRegressor(n_estimators=100, max_depth=10, random_state=42)
-        self.rf.fit(X_train, y_train)
+rf = RandomForestRegressor(n_estimators=100, max_depth=10, random_state=42)
+rf.fit(X_train, y_train)
+
+def predict(new_df):
+    # Convert the new_df instance to a pandas DataFrame
+    new_df = pd.DataFrame([new_df.__dict__])
     
-    def predict(self, new_df):
-        # Convert the new_df instance to a pandas DataFrame
-        new_df = pd.DataFrame([new_df.__dict__])
-        
-        # Make predictions on the new data
-        y_pred = self.rf.predict(new_df)
-        
-        return y_pred
+    # Make predictions on the new data
+    y_pred = rf.predict(new_df)
+    
+    return y_pred
