@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NLP Integration</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>NLP Integration with Django</h1>
+        <form id="nlpForm" method="post">
+            {% csrf_token %}
+            <label for="user_input">Enter text for prediction:</label>
+            <textarea id="user_input" name="user_input" rows="4" cols="50"></textarea>
+            <br><br>
+            <button type="submit">Submit</button>
+        </form>
+        <div id="results"></div>
+    </div>
+    <script>
+        document.getElementById('nlpForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            let formData = new FormData(this);
+            fetch("/", {
+                method: "POST",
+                body: formData,
+                headers: {
+                    "X-CSRFToken": formData.get('csrfmiddlewaretoken')
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('results').innerHTML = '<h2>Prediction: ' + data.predictions + '</h2>';
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>
