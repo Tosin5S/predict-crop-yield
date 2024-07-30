@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Field Data Form</title>
+</head>
+<body>
+    <h1>{% if fielddata.pk %}Edit{% else %}Create{% endif %} Field Data</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="studyYear">Study Year:</label>
+        <input type="text" id="studyYear" name="studyYear" value="{{ fielddata.studyYear }}"><br>
+
+        <label for="programDbId">Program DbId:</label>
+        <input type="text" id="programDbId" name="programDbId" value="{{ fielddata.programDbId }}"><br>
+
+        <label for="programName">Program Name:</label>
+        <input type="text" id="programName" name="programName" value="{{ fielddata.programName }}"><br>
+
+        <label for="programDescription">Program Description:</label>
+        <textarea id="programDescription" name="programDescription">{{ fielddata.programDescription }}</textarea><br>
+
+        <label for="studyDbId">Study DbId:</label>
+        <input type="text" id="studyDbId" name="studyDbId" value="{{ fielddata.studyDbId }}"><br>
+
+        <label for="studyName">Study Name:</label>
+        <input type="text" id="studyName" name="studyName" value="{{ fielddata.studyName }}"><br>
+
+        <label for="studyDescription">Study Description:</label>
+        <textarea id="studyDescription" name="studyDescription">{{ fielddata.studyDescription }}</textarea><br>
+
+        <label for="studyDesign">Study Design:</label>
+        <input type="text" id="studyDesign" name="studyDesign" value="{{ fielddata.studyDesign }}"><br>
+
+        <label for="plotWidth">Plot Width:</label>
+        <input type="text" id="plotWidth" name="plotWidth" value="{{ fielddata.plotWidth }}"><br>
+
+        <label for="plotLength">Plot Length:</label>
+        <input type="text" id="plotLength" name="plotLength" value="{{ fielddata.plotLength }}"><br>
+
+        <label for="fieldSize">Field Size:</label>
+        <input type="text" id="fieldSize" name="fieldSize" value="{{ fielddata.fieldSize }}"><br>
+
+        <label for="plantingDate">Planting Date:</label>
+        <input type="date" id="plantingDate" name="plantingDate" value="{{ fielddata.plantingDate }}"><br>
+
+        <label for="harvestDate">Harvest Date:</label>
+        <input type="date" id="harvestDate" name="harvestDate" value="{{ fielddata.harvestDate }}"><br>
+
+        <label for="locationDbId">Location DbId:</label>
+        <input type="text" id="locationDbId" name="locationDbId" value="{{ fielddata.locationDbId }}"><br>
+
+        <label for="locationName">Location Name:</label>
+        <input type="text" id="locationName" name="locationName" value="{{ fielddata.locationName }}"><br>
+
+        <label for="germplasmDbId">Germplasm DbId:</label>
+        <input type="text" id="germplasmDbId" name="germplasmDbId" value="{{ fielddata.germplasmDbId }}"><br>
+
+        <label for="germplasmName">Germplasm Name:</label>
+        <input type="text" id="germplasmName" name="germplasmName" value="{{ fielddata.germplasmName }}"><br>
+
+        <label for="germplasmSynonyms">Germplasm Synonyms:</label>
+        <input type="text" id="germplasmSynonyms" name="germplasmSynonyms" value="{{ fielddata.germplasmSynonyms }}"><br>
+
+        <label for="observationLevel">Observation Level:</label>
+        <input type="text" id="observationLevel" name="observationLevel" value="{{ fielddata.observationLevel }}"><br>
+
+        <label for="observationUnitDbId">Observation Unit DbId:</label>
+        <input type="text" id="observationUnitDbId" name="observationUnitDbId" value="{{ fielddata.observationUnitDbId }}"><br>
+
+        <label for="observationUnitName">Observation Unit Name:</label>
+        <input type="text" id="observationUnitName" name="observationUnitName" value="{{ fielddata.observationUnitName }}"><br>
+
+        <label for="replicate">Replicate:</label>
+        <input type="text" id="replicate" name="replicate" value="{{ fielddata.replicate }}"><br>
+
+        <label for="blockNumber">Block Number:</label>
+        <input type="text" id="blockNumber" name="blockNumber" value="{{ fielddata.blockNumber }}"><br>
+
+        <label for="plotNumber">Plot Number:</label>
+        <input type="text" id="plotNumber" name="plotNumber" value="{{ fielddata.plotNumber }}"><br>
+
+        <label for="entryType">Entry Type:</label>
+        <input type="text" id="entryType" name="entryType" value="{{ fielddata.entryType }}"><br>
+
+        <label for="boiled_storage_root_color">Boiled Storage Root Color:</label>
+        <input type="text" id="boiled_storage_root_color" name="boiled_storage_root_color" value="{{ fielddata.boiled_storage_root_color }}"><br>
+
+        <label for="cassava_anthractnose_disease_incidence_6_month">Cassava Anthractnose Disease Incidence 6 Month:</label>
+        <input type="text" id="cassava_anthractnose_disease_incidence_6_month" name="cassava_anthractnose_disease_incidence_6_month" value="{{ fielddata.cassava_anthractnose_disease_incidence_6_month }}"><br>
+
+        <label for="cassava_anthractnose_disease_incidence_9_month">Cassava Anthractnose Disease Incidence 9 Month:</label>
+        <input type="text" id="cassava_anthractnose_disease_incidence_9_month" name="cassava_anthractnose_disease_incidence_9_month" value="{{ fielddata.cassava_anthractnose_disease_incidence_9_month }}"><br>
+
+        <label for="cassava_anthractnose_disease_severity_6_month">Cassava Anthractnose Disease Severity 6 Month:</label>
+        <input type="text" id="cassava_anthractnose_disease_severity_6_month" name="cassava_anthractnose_disease_severity_6_month" value="{{ fielddata.cassava_anthractnose_disease_severity_6_month }}"><br>
+
+        <label for="cassava_anthractnose_disease_severity_9_month">Cassava Anthractnose Disease Severity 9 Month:</label>
+        <input type="text" id="cassava_anthractnose_disease_severity_9_month" name="cassava_anthractnose_disease_severity_9_month" value="{{ fielddata.cassava_anthractnose_disease_severity_9_month }}"><br>
+
+        <label for="cassava_bacterial_blight_incidence_3_month">Cassava Bacterial Blight Incidence 3 Month:</label>
+        <input type="text" id="cassava_bacterial_blight_incidence_3_month" name="cassava_bacterial_blight_incidence_3_month" value="{{ fielddata.cassava_bacterial_blight_incidence_3_month }}"><br>
+
+        <label for="cassava_bacterial_blight_incidence_6_month">Cassava Bacterial Blight Incidence 6 Month:</label>
+        <input type="text" id="cassava_bacterial_blight_incidence_6_month" name="cassava_bacterial_blight_incidence_6_month" value="{{ fielddata.cassava_bacterial_blight_incidence_6_month }}"><br>
+
+        <label for="cassava_bacterial_blight_severity_3_month">Cassava Bacterial Blight Severity 3 Month:</label>
+        <input type="text" id="cassava_bacterial_blight_severity_3_month" name="cassava_bacterial_blight_severity_3_month" value="{{ fielddata.cassava_bacterial_blight_severity_3_month }}"><br>
+
+        <label for="cassava_bacterial_blight_severity_6_month">Cassava Bacterial Blight Severity 6 Month:</label>
+        <input type="text" id="cassava_bacterial_blight_severity_6_month" name="cassava_bacterial_blight_severity_6_month" value="{{ fielddata.cassava_bacterial_blight_severity_6_month }}"><br>
+
+        <label for="cassava_green_mite_severity_first_evaluation">Cassava Green Mite Severity First Evaluation:</label>
+        <input type="text" id="cassava_green_mite_severity_first_evaluation" name="cassava_green_mite_severity_first_evaluation" value="{{ fielddata.cassava_green_mite_severity_first_evaluation }}"><br>
+
+        <label for="cassava_green_mite_severity_second_evaluation">Cassava Green Mite Severity Second Evaluation:</label>
+        <input type="text" id="cassava_green_mite_severity_second_evaluation" name="cassava_green_mite_severity_second_evaluation" value="{{ fielddata.cassava_green_mite_severity_second_evaluation }}"><br>
+
+        <label for="cassava_mosaic_disease_incidence_1_month">Cassava Mosaic Disease Incidence 1 Month:</label>
+        <input type="text" id="cassava_mosaic_disease_incidence_1_month" name="cassava_mosaic_disease_incidence_1_month" value="{{ fielddata.cassava_mosaic_disease_incidence_1_month }}"><br>
+
+        <label for="cassava_mosaic_disease_incidence_3_month">Cassava Mosaic Disease Incidence 3 Month:</label>
+        <input type="text" id="cassava_mosaic_disease_incidence_3_month" name="cassava_mosaic_disease_incidence_3_month" value="{{ fielddata.cassava_mosaic_disease_incidence_3_month }}"><br>
+
+        <label for="cassava_mosaic_disease_incidence_6_month">Cassava Mosaic Disease Incidence 6 Month:</label>
+        <input type="text" id="cassava_mosaic_disease_incidence_6_month" name="cassava_mosaic_disease_incidence_6_month" value="{{ fielddata.cassava_mosaic_disease_incidence_6_month }}"><br>
+
+        <label for="cassava_mosaic_disease_severity_1_month">Cassava Mosaic Disease Severity 1 Month:</label>
+        <input type="text" id="cassava_mosaic_disease_severity_1_month" name="cassava_mosaic_disease_severity_1_month" value="{{ fielddata.cassava_mosaic_disease_severity_1_month }}"><br>
+
+        <label for="cassava_mosaic_disease_severity_3_month">Cassava Mosaic Disease Severity 3 Month:</label>
+        <input type="text" id="cassava_mosaic_disease_severity_3_month" name="cassava_mosaic_disease_severity_3_month" value="{{ fielddata.cassava_mosaic_disease_severity_3_month }}"><br>
+
+        <label for="cassava_mosaic_disease_severity_6_month">Cassava Mosaic Disease Severity 6 Month:</label>
+        <input type="text" id="cassava_mosaic_disease_severity_6_month" name="cassava_mosaic_disease_severity_6_month" value="{{ fielddata.cassava_mosaic_disease_severity_6_month }}"><br>
+
+        <label for="dry_matter_content_specific_gravity_method">Dry Matter Content Specific Gravity Method:</label>
+        <input type="text" id="dry_matter_content_specific_gravity_method" name="dry_matter_content_specific_gravity_method" value="{{ fielddata.dry_matter_content_specific_gravity_method }}"><br>
+
+        <label for="dry_matter_content_percentage">Dry Matter Content Percentage:</label>
+        <input type="text" id="dry_matter_content_percentage" name="dry_matter_content_percentage" value="{{ fielddata.dry_matter_content_percentage }}"><br>
+
+        <label for="ease_of_peeling_root_cortex_visual_rating">Ease of Peeling Root Cortex Visual Rating:</label>
+        <input type="text" id="ease_of_peeling_root_cortex_visual_rating" name="ease_of_peeling_root_cortex_visual_rating" value="{{ fielddata.ease_of_peeling_root_cortex_visual_rating }}"><br>
+
+        <label for="first_apical_branch_height_cm">First Apical Branch Height (cm):</label>
+        <input type="text" id="first_apical_branch_height_cm" name="first_apical_branch_height_cm" value="{{ fielddata.first_apical_branch_height_cm }}"><br>
+
+        <label for="fresh_shoot_weight_kg_per_plot">Fresh Shoot Weight (kg per plot):</label>
+        <input type="text" id="fresh_shoot_weight_kg_per_plot" name="fresh_shoot_weight_kg_per_plot" value="{{ fielddata.fresh_shoot_weight_kg_per_plot }}"><br>
+
+        <label for="fresh_storage_root_weight_per_plot">Fresh Storage Root Weight (kg per plot):</label>
+        <input type="text" id="fresh_storage_root_weight_per_plot" name="fresh_storage_root_weight_per_plot" value="{{ fielddata.fresh_storage_root_weight_per_plot }}"><br>
+
+        <label for="harvest_index_variable">Harvest Index Variable:</label>
+        <input type="text" id="harvest_index_variable" name="harvest_index_variable" value="{{ fielddata.harvest_index_variable }}"><br>
+
+        <label for="initial_vigor_assessment">Initial Vigor Assessment:</label>
+        <input type="text" id="initial_vigor_assessment" name="initial_vigor_assessment" value="{{ fielddata.initial_vigor_assessment }}"><br>
+
+        <label for="number_of_planted_stakes_per_plot">Number of Planted Stakes per Plot:</label>
+        <input type="text" id="number_of_planted_stakes_per_plot" name="number_of_planted_stakes_per_plot" value="{{ fielddata.number_of_planted_stakes_per_plot }}"><br>
+
+        <label for="plant_architecture_visual_rating">Plant Architecture Visual Rating:</label>
+        <input type="text" id="plant_architecture_visual_rating" name="plant_architecture_visual_rating" value="{{ fielddata.plant_architecture_visual_rating }}"><br>
+
+        <label for="plant_stands_harvested_counting">Plant Stands Harvested (Counting):</label>
+        <input type="text" id="plant_stands_harvested_counting" name="plant_stands_harvested_counting" value="{{ fielddata.plant_stands_harvested_counting }}"><br>
+
+        <label for="poundability_assessment">Poundability Assessment:</label>
+        <input type="text" id="poundability_assessment" name="poundability_assessment" value="{{ fielddata.poundability_assessment }}"><br>
+
+        <label for="proportion_lodged_plants_percentage">Proportion of Lodged Plants (%):</label>
+        <input type="text" id="proportion_lodged_plants_percentage" name="proportion_lodged_plants_percentage" value="{{ fielddata.proportion_lodged_plants_percentage }}"><br>
+
+        <label for="root_neck_length_visual_rating">Root Neck Length Visual Rating:</label>
+        <input type="text" id="root_neck_length_visual_rating" name="root_neck_length_visual_rating" value="{{ fielddata.root_neck_length_visual_rating }}"><br>
+
+        <label for="root_number_counting">Root Number (Counting):</label>
+        <input type="text" id="root_number_counting" name="root_number_counting" value="{{ fielddata.root_number_counting }}"><br>
+
+        <label for="rotted_storage_root_counting">Rotted Storage Root (Counting):</label>
+        <input type="text" id="rotted_storage_root_counting" name="rotted_storage_root_counting" value="{{ fielddata.rotted_storage_root_counting }}"><br>
+
+        <label for="specific_gravity">Specific Gravity:</label>
+        <input type="text" id="specific_gravity" name="specific_gravity" value="{{ fielddata.specific_gravity }}"><br>
+
+        <label for="sprout_count_nine_month">Sprout Count (9 Months):</label>
+        <input type="text" id="sprout_count_nine_month" name="sprout_count_nine_month" value="{{ fielddata.sprout_count_nine_month }}"><br>
+
+        <label for="sprout_count_one_month">Sprout Count (1 Month):</label>
+        <input type="text" id="sprout_count_one_month" name="sprout_count_one_month" value="{{ fielddata.sprout_count_one_month }}"><br>
+
+        <label for="sprout_count_six_month">Sprout Count (6 Months):</label>
+        <input type="text" id="sprout_count_six_month" name="sprout_count_six_month" value="{{ fielddata.sprout_count_six_month }}"><br>
+
+        <label for="sprout_count_three_month">Sprout Count (3 Months):</label>
+        <input type="text" id="sprout_count_three_month" name="sprout_count_three_month" value="{{ fielddata.sprout_count_three_month }}"><br>
+
+        <label for="sprouting_proportion">Sprouting Proportion:</label>
+        <input type="text" id="sprouting_proportion" name="sprouting_proportion" value="{{ fielddata.sprouting_proportion }}"><br>
+
+        <label for="storage_root_cortex_color_visual_rating">Storage Root Cortex Color Visual Rating:</label>
+        <input type="text" id="storage_root_cortex_color_visual_rating" name="storage_root_cortex_color_visual_rating" value="{{ fielddata.storage_root_cortex_color_visual_rating }}"><br>
+
+        <label for="storage_root_periderm_color_visual_rating">Storage Root Periderm Color Visual Rating:</label>
+        <input type="text" id="storage_root_periderm_color_visual_rating" name="storage_root_periderm_color_visual_rating" value="{{ fielddata.storage_root_periderm_color_visual_rating }}"><br>
+
+        <label for="storage_root_pulp_color_visual_rating">Storage Root Pulp Color Visual Rating:</label>
+        <input type="text" id="storage_root_pulp_color_visual_rating" name="storage_root_pulp_color_visual_rating" value="{{ fielddata.storage_root_pulp_color_visual_rating }}"><br>
+        
+        <label for="storage_root_shape_visual_rating">storage_root_shape_visual_rating:</label>
+        <input type="text" id="storage_root_shape_visual_rating" name="storage_root_shape_visual_rating" value="{{ fielddata.storage_root_shape_visual_rating }}"><br>
+
+        <label for="storage_root_size_visual_rating">storage_root_size_visual_rating:</label>
+        <input type="text" id="storage_root_size_visual_rating" name="storage_root_size_visual_rating" value="{{ fielddata.storage_root_size_visual_rating }}"><br>
+
+        <label for="taste_of_boiled_root_rating">taste_of_boiled_root_rating:</label>
+        <input type="text" id="taste_of_boiled_root_rating" name="taste_of_boiled_root_rating" value="{{ fielddata.taste_of_boiled_root_rating }}"><br>
+
+        <label for="top_yield">top_yield:</label>
+        <input type="text" id="top_yield" name="top_yield" value="{{ fielddata.top_yield }}"><br>
+
+        <label for="total_carotenoid_chart_1_8">total_carotenoid_chart_1_8:</label>
+        <input type="text" id="total_carotenoid_chart_1_8" name="total_carotenoid_chart_1_8" value="{{ fielddata.total_carotenoid_chart_1_8 }}"><br>
+
+        <label for="total_carotenoid_iCheck_method">total_carotenoid_iCheck_method:</label>
+        <input type="text" id="total_carotenoid_iCheck_method" name="total_carotenoid_iCheck_method" value="{{ fielddata.total_carotenoid_iCheck_method }}"><br>
+        
+
+        <input type="submit" value="Submit">
+    </form>
+    <a href="{% url 'fielddata_list' %}">Back to List</a>
+</body>
+</html>

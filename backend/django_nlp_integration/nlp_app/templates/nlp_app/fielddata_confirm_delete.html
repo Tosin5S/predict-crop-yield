@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Confirm Delete</title>
+</head>
+<body>
+    <h1>Are you sure you want to delete this field data?</h1>
+    <p><strong>Study Name:</strong> {{ fielddata.studyName }}</p>
+    <form method="post">
+        {% csrf_token %}
+        <input type="submit" value="Confirm">
+    </form>
+    <a href="{% url 'fielddata_list' %}">Cancel</a>
+</body>
+</html>

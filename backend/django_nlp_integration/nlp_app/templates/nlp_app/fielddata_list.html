@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Field Data List</title>
+</head>
+<body>
+    <h1>Field Data List</h1>
+    <a href="{% url 'fielddata_create' %}">Create New Field Data</a>
+    <ul>
+        {% for fielddata in fielddata %}
+        <li>
+            <a href="{% url 'fielddata_detail' fielddata.pk %}">{{ fielddata }}</a>
+            <a href="{% url 'fielddata_update' fielddata.pk %}">Edit</a>
+            <a href="{% url 'fielddata_delete' fielddata.pk %}">Delete</a>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
