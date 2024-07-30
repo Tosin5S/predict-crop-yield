@@ -10,4 +10,5 @@ urlpatterns = [
     path('fielddata/new/', views.fielddata_create, name='fielddata_create'),
     path('fielddata/<int:pk>/edit/', views.fielddata_update, name='fielddata_update'),
     path('fielddata/<int:pk>/delete/', views.fielddata_delete, name='fielddata_delete'),
+    path('fielddata/<int:pk>/predict/', views.fielddata_predict, name='fielddata_predict'),
 ]
