@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Field Data Explanation</title>
+</head>
+<body>
+    <h1>{{ fielddata }}</h1>
+    <h2>Explanations</h2>
+    <ul>
+        {% for text, label in explanations %}
+        <li>{{ text }}: {{ label }}</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'fielddata_list' %}">Back to List</a>
+</body>
+</html>

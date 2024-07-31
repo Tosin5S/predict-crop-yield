@@ -23,6 +23,7 @@
                 <a href="{% url 'fielddata_update' fielddata.pk %}">Edit</a>
                 <a href="{% url 'fielddata_delete' fielddata.pk %}">Delete</a>
                 <a href="{% url 'fielddata_predict' fielddata.pk %}">Predict</a>
+                <a href="{% url 'fielddata_explain' fielddata.pk %}">Explain</a>
             </td>
         </tr>
         {% endfor %}

@@ -8,6 +8,8 @@ import joblib
 from django.conf import settings
 import os
 from datetime import date
+import spacy
+from .nlp_utils import explain_record
 
 def index(request):
     # Define specific traits
@@ -102,6 +104,15 @@ def fielddata_list(request):
         'y_field': y_field,
     }
     return render(request, 'nlp_app/fielddata_list.html', context)
+
+def fielddata_explain(request, pk):
+    fielddata = get_object_or_404(FieldData, pk=pk)
+    explanations = explain_record(str(fielddata))
+    context = {
+        'fielddata': fielddata,
+        'explanations': explanations,
+    }
+    return render(request, 'nlp_app/fielddata_explain.html', context)
 
 def fielddata_detail(request, pk):
     fielddata = get_object_or_404(FieldData, pk=pk)
@@ -390,3 +401,16 @@ def perform_prediction(fielddata):
     print("Predictions on new data:", new_predictions)
 
     return new_predictions[0]
+
+nlp = spacy.load('en_core_web_sm')
+
+def chatbot(request):
+    if request.method == 'POST':
+        user_input = request.POST.get('message')
+        doc = nlp(user_input)
+        response = {
+            'entities': [(ent.text, ent.label_) for ent in doc.ents],
+            'message': f"Processed input: {user_input}"
+        }
+        return JsonResponse(response)
+    return render(request, 'chatbot.html')

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chatbot</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Chatbot</h1>
+    <div id="chatbox">
+        <div id="messages"></div>
+        <input type="text" id="user_input" placeholder="Type a message...">
+        <button id="send">Send</button>
+    </div>
+    <script>
+        $('#send').click(function() {
+            var message = $('#user_input').val();
+            $.ajax({
+                url: "{% url 'chatbot' %}",
+                method: "POST",
+                data: {
+                    'message': message,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    $('#messages').append('<div>User: ' + message + '</div>');
+                    $('#messages').append('<div>Bot: ' + response.message + '</div>');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
