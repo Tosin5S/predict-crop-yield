@@ -376,6 +376,9 @@ def perform_prediction(fielddata):
         'total_carotenoid_iCheck_method': [fielddata.total_carotenoid_iCheck_method]
     })
     
+    # Debugging: print the raw new data
+    print("Raw new data for prediction:", new_data)
+
     # Ensure all required columns are present in the new data
     numeric_features = model_pipeline.named_steps['preprocessor'].transformers_[0][2]
     categorical_features = model_pipeline.named_steps['preprocessor'].transformers_[1][2]
