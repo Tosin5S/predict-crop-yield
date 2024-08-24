@@ -1,16 +1,61 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
-from .models import FieldData
-from django.db.models import FloatField, IntegerField  # Import these fields
-from .nlp import predict_from_text, reflect_prediction
+from django.conf import settings
+from django.contrib import messages
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login
+from django.db.models import FloatField, IntegerField
 import pandas as pd
 import joblib
-from django.conf import settings
 import os
-from datetime import date
-import spacy
+from .models import FieldData, Profile
 from .nlp_utils import explain_record
+from .nlp import predict_from_text, reflect_prediction
+from .forms import UserUpdateForm, ProfileUpdateForm
 
+# Load the trained model pipeline
+model_file = os.path.join(os.path.dirname(__file__), 'data', 'random_forest_model.pkl')
+model_pipeline = joblib.load(model_file)
+
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            username = form.cleaned_data.get('username')
+            messages.success(request, f'Account created for {username}!')
+            login(request, user)
+            return redirect('index')  # Redirect to the home page after successful registration
+    else:
+        form = UserCreationForm()
+    return render(request, 'registration/register.html', {'form': form})
+
+@login_required
+def profile(request):
+    # Ensure the user has a profile
+    if not hasattr(request.user, 'profile'):
+        Profile.objects.create(user=request.user)
+
+    if request.method == 'POST':
+        u_form = UserUpdateForm(request.POST, instance=request.user)
+        p_form = ProfileUpdateForm(request.POST, instance=request.user.profile)
+        if u_form.is_valid() and p_form.is_valid():
+            u_form.save()
+            p_form.save()
+            return redirect('profile')
+    else:
+        u_form = UserUpdateForm(instance=request.user)
+        p_form = ProfileUpdateForm(instance=request.user.profile)
+
+    context = {
+        'u_form': u_form,
+        'p_form': p_form
+    }
+
+    return render(request, 'nlp_app/profile.html', context)
+
+@login_required
 def index(request):
     # Define specific traits
     specific_traits = [
@@ -90,6 +135,7 @@ def index(request):
     context = {'specific_traits': specific_traits}
     return render(request, 'nlp_app/index.html', context)
 
+@login_required
 def fielddata_list(request):
     fielddata = FieldData.objects.all()
     fields = [f.name for f in FieldData._meta.get_fields() if isinstance(f, FloatField) or isinstance(f, IntegerField)]
@@ -105,6 +151,7 @@ def fielddata_list(request):
     }
     return render(request, 'nlp_app/fielddata_list.html', context)
 
+@login_required
 def fielddata_explain(request, pk):
     fielddata = get_object_or_404(FieldData, pk=pk)
     explanations = explain_record(str(fielddata))
@@ -114,10 +161,12 @@ def fielddata_explain(request, pk):
     }
     return render(request, 'nlp_app/fielddata_explain.html', context)
 
+@login_required
 def fielddata_detail(request, pk):
     fielddata = get_object_or_404(FieldData, pk=pk)
     return render(request, 'nlp_app/fielddata_detail.html', {'fielddata': fielddata})
 
+@login_required
 def fielddata_create(request):
     if request.method == 'POST':
         new_fielddata = FieldData(
@@ -199,6 +248,7 @@ def fielddata_create(request):
         return redirect('fielddata_list')
     return render(request, 'nlp_app/fielddata_form.html')
 
+@login_required
 def fielddata_update(request, pk):
     fielddata = get_object_or_404(FieldData, pk=pk)
     if request.method == 'POST':
@@ -279,6 +329,7 @@ def fielddata_update(request, pk):
         return redirect('fielddata_detail', pk=fielddata.pk)
     return render(request, 'nlp_app/fielddata_form.html', {'fielddata': fielddata})
 
+@login_required
 def fielddata_delete(request, pk):
     fielddata = get_object_or_404(FieldData, pk=pk)
     if request.method == 'POST':
@@ -286,6 +337,7 @@ def fielddata_delete(request, pk):
         return redirect('fielddata_list')
     return render(request, 'nlp_app/fielddata_confirm_delete.html', {'fielddata': fielddata})
 
+@login_required
 def fielddata_predict(request, pk):
     fielddata = get_object_or_404(FieldData, pk=pk)
     # Implement your prediction logic here using fielddata
@@ -298,6 +350,7 @@ model_file = os.path.join(os.path.dirname(__file__), 'data', 'random_forest_mode
 #model_file = os.path.join(settings.BASE_DIR, 'random_forest_model.pkl')
 model_pipeline = joblib.load(model_file)
 
+@login_required
 def perform_prediction(fielddata):
     # Prepare data for prediction
     new_data = pd.DataFrame({
@@ -405,8 +458,9 @@ def perform_prediction(fielddata):
 
     return new_predictions[0]
 
-nlp = spacy.load('en_core_web_sm')
-
+# nlp = spacy.load('en_core_web_sm')
+'''
+@login_required
 def chatbot(request):
     if request.method == 'POST':
         user_input = request.POST.get('message')
@@ -416,4 +470,4 @@ def chatbot(request):
             'message': f"Processed input: {user_input}"
         }
         return JsonResponse(response)
-    return render(request, 'chatbot.html')
+    return render(request, 'chatbot.html') '''

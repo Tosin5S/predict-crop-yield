@@ -1,5 +1,16 @@
 from django.db import models
 from datetime import date
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
+class YourModel(models.Model):
+    # Define your model fields here
+    name = models.CharField(max_length=100)
+    # other fields...
+
+    def __str__(self):
+        return self.name
 
 class FieldData(models.Model):
     studyYear = models.IntegerField(default=0)
@@ -78,3 +89,22 @@ class FieldData(models.Model):
 
     def __str__(self):
         return f"{self.programName} - {self.studyName}"
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    bio = models.TextField(blank=True, null=True)
+    location = models.CharField(max_length=30, blank=True, null=True)
+    birth_date = models.DateField(null=True, blank=True)
+
+    def __str__(self):
+        return f'{self.user.username} Profile'
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    if hasattr(instance, 'profile'):
+        instance.profile.save()
