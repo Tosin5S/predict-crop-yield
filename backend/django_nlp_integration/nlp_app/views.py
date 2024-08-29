@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseBadRequest, HttpResponseNotFound
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
@@ -9,10 +9,13 @@ from django.db.models import FloatField, IntegerField
 import pandas as pd
 import joblib
 import os
+import shap
 from .models import FieldData, Profile
 from .nlp_utils import explain_record
 from .nlp import predict_from_text, reflect_prediction
 from .forms import UserUpdateForm, ProfileUpdateForm
+from transformers import pipeline
+
 
 # Load the trained model pipeline
 model_file = os.path.join(os.path.dirname(__file__), 'data', 'random_forest_model.pkl')
@@ -151,7 +154,7 @@ def fielddata_list(request):
     }
     return render(request, 'nlp_app/fielddata_list.html', context)
 
-@login_required
+'''@login_required
 def fielddata_explain(request, pk):
     fielddata = get_object_or_404(FieldData, pk=pk)
     explanations = explain_record(str(fielddata))
@@ -159,7 +162,7 @@ def fielddata_explain(request, pk):
         'fielddata': fielddata,
         'explanations': explanations,
     }
-    return render(request, 'nlp_app/fielddata_explain.html', context)
+    return render(request, 'nlp_app/fielddata_explain.html', context)'''
 
 @login_required
 def fielddata_detail(request, pk):
@@ -350,7 +353,7 @@ model_file = os.path.join(os.path.dirname(__file__), 'data', 'random_forest_mode
 #model_file = os.path.join(settings.BASE_DIR, 'random_forest_model.pkl')
 model_pipeline = joblib.load(model_file)
 
-@login_required
+
 def perform_prediction(fielddata):
     # Prepare data for prediction
     new_data = pd.DataFrame({
@@ -471,3 +474,116 @@ def chatbot(request):
         }
         return JsonResponse(response)
     return render(request, 'chatbot.html') '''
+
+
+@login_required
+def fielddata_explain(request, pk):
+    # Retrieve the FieldData instance by primary key
+    fielddata = get_object_or_404(FieldData, pk=pk)
+
+    # Create the new data DataFrame based on FieldData instance
+    new_data = pd.DataFrame({
+        'studyYear': [fielddata.studyYear],
+        'programDbId': [fielddata.programDbId],
+        'studyDbId': [fielddata.studyDbId],
+        'programName': [fielddata.programName],
+        'plotWidth': [fielddata.plotWidth],
+        'plotLength': [fielddata.plotLength],
+        'locationDbId': [fielddata.locationDbId],
+        'locationName': [fielddata.locationName],
+        'germplasmDbId': [fielddata.germplasmDbId],
+        'germplasmName': [fielddata.germplasmName],
+        'observationLevel': [fielddata.observationLevel],
+        'replicate': [fielddata.replicate],
+        'blockNumber': [fielddata.blockNumber],
+        'plotNumber': [fielddata.plotNumber],
+        'cassava_anthractnose_disease_incidence_9_month': [fielddata.cassava_anthractnose_disease_incidence_9_month],
+        'cassava_anthractnose_disease_severity_9_month': [fielddata.cassava_anthractnose_disease_severity_9_month],
+        'cassava_bacterial_blight_incidence_6_month': [fielddata.cassava_bacterial_blight_incidence_6_month],
+        'cassava_green_mite_severity_second_evaluation': [fielddata.cassava_green_mite_severity_second_evaluation],
+        'fresh_storage_root_weight_per_plot': [fielddata.fresh_storage_root_weight_per_plot],
+        'number_of_planted_stakes_per_plot': [fielddata.number_of_planted_stakes_per_plot],
+        'plant_architecture_visual_rating': [fielddata.plant_architecture_visual_rating],
+        'root_number_counting': [fielddata.root_number_counting],
+        'specific_gravity': [fielddata.specific_gravity],
+    })
+    
+    # Debugging: print the raw new data
+    print("Raw new data for prediction:", new_data)
+
+    # Ensure all required columns are present in the new data
+    numeric_features = model_pipeline.named_steps['preprocessor'].transformers_[0][2]
+    categorical_features = model_pipeline.named_steps['preprocessor'].transformers_[1][2]
+    
+    all_features = list(numeric_features) + list(categorical_features)
+    
+    for col in all_features:
+        if col not in new_data.columns:
+            new_data[col] = 0  # Fill with default value, adjust as necessary
+    
+    # Select only the columns used in training
+    new_data = new_data[all_features]
+
+    # Debugging: print the input data
+    print("New data for prediction:", new_data)
+    
+    # Preprocess the new data using the same pipeline
+    new_data_preprocessed = model_pipeline.named_steps['preprocessor'].transform(new_data)
+
+    
+
+    # Retrieve preprocessed feature names
+    try:
+        preprocessed_numeric_features = model_pipeline.named_steps['preprocessor'].transformers_[0][1].get_feature_names_out(numeric_features).tolist()
+        preprocessed_categorical_features = model_pipeline.named_steps['preprocessor'].transformers_[1][1].get_feature_names_out(categorical_features).tolist()
+        preprocessed_feature_names = preprocessed_numeric_features + preprocessed_categorical_features
+    except ValueError as e:
+        print(f"Error retrieving feature names: {e}")
+        preprocessed_feature_names = all_features  # Fallback to original feature names
+
+    # Make predictions on the new data
+    new_predictions = model_pipeline.named_steps['regressor'].predict(new_data_preprocessed)
+    print("Predictions on new data:", new_predictions)
+
+    # Create a SHAP explainer for the model
+    explainer = shap.TreeExplainer(model_pipeline.named_steps['regressor'])
+
+    # Calculate SHAP values for the prediction
+    shap_values = explainer.shap_values(new_data_preprocessed)    
+    
+    
+
+    def generate_explanation(features, prediction, shap_values):
+        # Truncate the features to the first 5 for explanation purposes
+        truncated_features = {k: features[k] for k in list(features)[:5]}
+        truncated_shap_values = shap_values[:5]
+        prompt = (
+            "Given the following features of a cassava crop:\n\n"
+            f"{truncated_features}\n\n"
+            f"The predicted yield is {prediction:.2f}. "
+            "Explain how each feature impacts the yield prediction, considering the following SHAP values:\n\n"
+            f"{shap_values[:5]}\n\n"
+            f"{truncated_shap_values}\n\n" 
+        )
+        generator = pipeline("text-generation", model="gpt2", pad_token_id=50256)
+        response = generator(prompt, max_new_tokens=100, num_return_sequences=1)
+        explanation = response[0]['generated_text'].strip()
+        return explanation
+
+    # Prepare data for explanation generation
+    features = new_data.iloc[0].to_dict()
+    prediction = new_predictions[0]
+    shap_value = shap_values[0]
+    explanation = generate_explanation(features, prediction, shap_value)
+
+    # Generate a SHAP summary plot
+    shap.summary_plot(shap_values, new_data_preprocessed, feature_names=preprocessed_feature_names)
+
+    # Prepare context for rendering the template
+    context = {
+        'fielddata': fielddata,
+        'explanation': explanation,
+    }
+
+    # Render the explanation page
+    return render(request, 'nlp_app/fielddata_explain.html', context)
