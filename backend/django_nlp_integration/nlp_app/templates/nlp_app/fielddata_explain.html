@@ -2,15 +2,91 @@
 <html>
 <head>
     <title>Field Data Explanation</title>
+    <style>
+        /* Add some basic styling for the chatbot interface */
+        #chatbox {
+            width: 300px;
+            height: 400px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            overflow-y: scroll;
+        }
+
+        #user-input {
+            width: 80%;
+            padding: 10px;
+            margin-top: 10px;
+        }
+
+        #send-button {
+            padding: 10px;
+        }
+
+        .user-message {
+            text-align: right;
+            color: blue;
+        }
+
+        .bot-response {
+            text-align: left;
+            color: green;
+        }
+    </style>
 </head>
 <body>
-    <h1>{{ fielddata }}</h1>
-    <h2>Explanations</h2>
+    <h1>Field Data Explanation</h1>
+    <h2>Field Data Details</h2>
     <ul>
-        {% for text, label in explanations %}
-        <li>{{ text }}: {{ label }}</li>
+        {% for key, value in fielddata.items %}
+        <li><strong>{{ key }}:</strong> {{ value }}</li>
         {% endfor %}
     </ul>
+
+    <h2>Explanation</h2>
+    <p>{{ explanation }}</p>
+
     <a href="{% url 'fielddata_list' %}">Back to List</a>
+
+    <!-- Chatbot Section -->
+    <h2>Chatbot</h2>
+    <div id="chatbox"></div>
+    <input type="text" id="user-input" placeholder="Ask a question...">
+    <button id="send-button">Send</button>
+
+    <script>
+        document.getElementById('send-button').addEventListener('click', function() {
+            var userMessage = document.getElementById('user-input').value;
+            document.getElementById('user-input').value = '';
+    
+            // Display user message
+            var chatbox = document.getElementById('chatbox');
+            var userMessageDiv = document.createElement('div');
+            userMessageDiv.className = 'user-message';
+            userMessageDiv.innerText = userMessage;
+            chatbox.appendChild(userMessageDiv);
+    
+            // Get the pk from the context
+            var pk = "{{ fielddata.id }}"; // assuming `fielddata.id` is available in your context
+    
+            // Send message to server
+            fetch(`/chatbot/${pk}/`, {  // Using pk in the URL
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'message=' + encodeURIComponent(userMessage)
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Display bot response
+                var botResponseDiv = document.createElement('div');
+                botResponseDiv.className = 'bot-response';
+                botResponseDiv.innerText = data.response;
+                chatbox.appendChild(botResponseDiv);
+                chatbox.scrollTop = chatbox.scrollHeight;
+            });
+        });
+    </script>
+    
 </body>
 </html>

@@ -1,7 +1,7 @@
 from django.contrib import admin
-from django.contrib.auth.models import Permission
+from django.contrib.auth.models import User, Permission
 from django.contrib.contenttypes.models import ContentType
-from .models import YourModel
+from .models import YourModel, Profile
 
 @admin.register(YourModel)
 class YourModelAdmin(admin.ModelAdmin):
@@ -15,3 +15,13 @@ if not Permission.objects.filter(codename='can_view_model', content_type=content
         name='Can View Model',
         content_type=content_type,
     )
+
+class ProfileInline(admin.StackedInline):
+    model = Profile
+    can_delete = False
+
+class UserAdmin(admin.ModelAdmin):
+    inlines = [ProfileInline]
+
+admin.site.unregister(User)
+admin.site.register(User, UserAdmin)
