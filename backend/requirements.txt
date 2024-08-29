@@ -18,7 +18,3 @@ tzdata==2024.1
 setuptools==60.9.3
 django-cors-headers
 spacy
-shap
-transformers
-tensorflow
-tf-keras

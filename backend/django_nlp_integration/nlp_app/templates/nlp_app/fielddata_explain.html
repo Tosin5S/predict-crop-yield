@@ -4,17 +4,13 @@
     <title>Field Data Explanation</title>
 </head>
 <body>
-    <h1>Field Data Explanation</h1>
-    <h2>Field Data Details</h2>
+    <h1>{{ fielddata }}</h1>
+    <h2>Explanations</h2>
     <ul>
-        {% for key, value in fielddata.items %}
-        <li><strong>{{ key }}:</strong> {{ value }}</li>
+        {% for text, label in explanations %}
+        <li>{{ text }}: {{ label }}</li>
         {% endfor %}
     </ul>
-
-    <h2>Explanation</h2>
-    <p>{{ explanation }}</p>
-
     <a href="{% url 'fielddata_list' %}">Back to List</a>
 </body>
 </html>
