@@ -1,3 +1,26 @@
+/* Global Light Green Theme */
+body {
+    background-color: #f0fff0; /* Light green background */
+    color: #006400; /* Dark green text */
+}
+
+header, footer {
+    background-color: #90ee90; /* Light green header/footer */
+    color: #006400;
+}
+
+button {
+    background-color: #32cd32; /* Light green button */
+}
+
+button:hover {
+    background-color: #228b22; /* Darker green on hover */
+}
+
+.container {
+    background-color: #98fb98; /* Lighter green for container */
+}
+
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;

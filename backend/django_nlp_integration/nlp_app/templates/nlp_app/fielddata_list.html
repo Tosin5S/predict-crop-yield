@@ -1,60 +1,63 @@
 {% extends 'base_generic.html' %}
 {% block content %}
+{% load static %}  <!-- Load the static tag library -->
 <!-- templates/nlp_app/fielddata_list.html -->
 {% load fielddata_extras %}
-
 
 <!DOCTYPE html>
 <html>
 <head>
     <title>Field Data List</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="{% static 'css/global.css' %}"> <!-- Link to your global CSS -->
 </head>
 <body>
-    <h1>Field Data List</h1>
-    <table>
-        <tr>
-            <th>Study Name</th>
-            <th>Program Name</th>
-            <th>Actions</th>
-        </tr>
-        {% for fielddata in fielddata %}
-        <tr>
-            <td>{{ fielddata.studyName }}</td>
-            <td>{{ fielddata.programName }}</td>
-            <td>
-                <a href="{% url 'fielddata_detail' fielddata.pk %}">View</a>
-                <a href="{% url 'fielddata_update' fielddata.pk %}">Edit</a>
-                <a href="{% url 'fielddata_delete' fielddata.pk %}">Delete</a>
-                <a href="{% url 'fielddata_predict' fielddata.pk %}">Predict</a>
-                <a href="{% url 'fielddata_explain' fielddata.pk %}">Explain</a>
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
-    <a href="{% url 'fielddata_create' %}">Add New Field Data</a>
-
-    <h2>Select Fields for Scatter Plot</h2>
-    <form method="get">
-        <label for="x_field">X-Axis Field:</label>
-        <select name="x_field" id="x_field">
-            {% for field in fields %}
-            <option value="{{ field }}" {% if field == x_field %}selected{% endif %}>{{ field }}</option>
+    <div class="container">
+        <h1>Field Data List</h1>
+        <table class="data-table">
+            <tr>
+                <th>Study Name</th>
+                <th>Program Name</th>
+                <th>Actions</th>
+            </tr>
+            {% for fielddata in fielddata %}
+            <tr>
+                <td>{{ fielddata.studyName }}</td>
+                <td>{{ fielddata.programName }}</td>
+                <td class="actions">
+                    <a class="btn" href="{% url 'fielddata_detail' fielddata.pk %}">View</a>
+                    <a class="btn" href="{% url 'fielddata_update' fielddata.pk %}">Edit</a>
+                    <a class="btn" href="{% url 'fielddata_delete' fielddata.pk %}">Delete</a>
+                    <a class="btn" href="{% url 'fielddata_predict' fielddata.pk %}">Predict</a>
+                    <a class="btn" href="{% url 'fielddata_explain' fielddata.pk %}">Explain</a>
+                </td>
+            </tr>
             {% endfor %}
-        </select>
+        </table>
+        <a class="btn btn-add" href="{% url 'fielddata_create' %}">Add New Field Data</a>
 
-        <label for="y_field">Y-Axis Field:</label>
-        <select name="y_field" id="y_field">
-            {% for field in fields %}
-            <option value="{{ field }}" {% if field == y_field %}selected{% endif %}>{{ field }}</option>
-            {% endfor %}
-        </select>
-        
-        <button type="submit">Update Plot</button>
-    </form>
+        <h2>Select Fields for Scatter Plot</h2>
+        <form method="get" class="form-inline">
+            <label for="x_field">X-Axis Field:</label>
+            <select name="x_field" id="x_field" class="form-control">
+                {% for field in fields %}
+                <option value="{{ field }}" {% if field == x_field %}selected{% endif %}>{{ field }}</option>
+                {% endfor %}
+            </select>
 
-    <h2>Scatter Plot</h2>
-    <canvas id="scatterPlot" width="400" height="400"></canvas>
+            <label for="y_field">Y-Axis Field:</label>
+            <select name="y_field" id="y_field" class="form-control">
+                {% for field in fields %}
+                <option value="{{ field }}" {% if field == y_field %}selected{% endif %}>{{ field }}</option>
+                {% endfor %}
+            </select>
+            
+            <button type="submit" class="btn btn-submit">Update Plot</button>
+        </form>
+
+        <h2>Scatter Plot</h2>
+        <canvas id="scatterPlot" width="400" height="400"></canvas>
+    </div>
     <script>
         const ctx = document.getElementById('scatterPlot').getContext('2d');
         const scatterData = {

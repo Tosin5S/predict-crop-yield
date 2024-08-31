@@ -12,7 +12,7 @@ import joblib
 import os
 import shap
 from .models import FieldData, Profile
-from .nlp_utils import explain_record
+# from .nlp_utils import explain_record
 from .nlp import predict_from_text, reflect_prediction
 from .forms import UserUpdateForm, ProfileUpdateForm
 from transformers import pipeline
