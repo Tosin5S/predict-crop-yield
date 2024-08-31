@@ -5,7 +5,7 @@ from .nlp_app import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('auth/', include('django.contrib.auth.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
     path('register/', views.register, name='register'),
     path('accounts/profile/', views.profile, name='profile'),
     path('', views.index, name='index'),

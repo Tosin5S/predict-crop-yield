@@ -1,3 +1,5 @@
+{% extends 'base_generic.html' %}
+{% block content %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -79,7 +81,8 @@
     <p><strong>total_carotenoid_chart_1_8:</strong> {{ fielddata.total_carotenoid_chart_1_8 }}</p>
     <p><strong>total_carotenoid_iCheck_method:</strong> {{ fielddata.total_carotenoid_iCheck_method }}</p>
     
-    <a href="{% url 'fielddata_update' fielddata.pk %}">Edit</a>
-    <a href="{% url 'fielddata_list' %}">Back to List</a>
+    <a href="{% url 'fielddata_update' fielddata.pk %}" class="btn">Edit</a>
+    <a href="{% url 'fielddata_list' %}" class="btn">Back to List</a>
 </body>
 </html>
+{% endblock %}

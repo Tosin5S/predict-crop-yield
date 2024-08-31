@@ -1,3 +1,5 @@
+{% extends 'base_generic.html' %}
+{% block content %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -227,8 +229,9 @@
         <input type="text" id="total_carotenoid_iCheck_method" name="total_carotenoid_iCheck_method" value="{{ fielddata.total_carotenoid_iCheck_method }}"><br>
         
 
-        <input type="submit" value="Submit">
+        <input type="submit" value="Submit" class="btn">
     </form>
-    <a href="{% url 'fielddata_list' %}">Back to List</a>
+    <a href="{% url 'fielddata_list' %}" class="btn">Back to List</a>
 </body>
 </html>
+{% endblock %}
