@@ -27,7 +27,7 @@ COPY . .
 ENV NLTK_DATA=/django_nlp_integration/nlp_app/data/nltk_data
 
 # Expose port if needed
-EXPOSE 8000
+EXPOSE 80
 
 # Command to run the Django development server
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:80"]
