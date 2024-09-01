@@ -15,9 +15,7 @@ sqlparse
 threadpoolctl
 tqdm
 tzdata
-setuptools
 django-cors-headers
-spacy
 shap
 transformers
 tensorflow
