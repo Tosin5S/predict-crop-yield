@@ -1,20 +1,25 @@
-#This is an example webapp.io configuration for Django!
+# This is an example webapp.io configuration for Django!
 FROM vm/ubuntu:18.04
 
 # To note: Layerfiles create entire VMs, *not* containers!
 
-# Install python 3 & postgresql
-RUN apt-get update && \\
-    apt-get install python3-pip python3-dev
+# Install system dependencies
+RUN apt-get update && \
+    apt-get install -y python3-pip python3-dev libpq-dev
 
-# Install django & postgresql python driver
-RUN pip3 install requirements.txt
-
+# Install Python dependencies
+COPY requirements.txt .
+RUN pip3 install -r requirements.txt
 
 # Copy project files
 COPY . .
 
+# Run Django migrations (if applicable)
+RUN python3 manage.py migrate
 
-# Start the server
+# Start the Django development server in the background
 RUN BACKGROUND python3 manage.py runserver 0.0.0.0:8000
-EXPOSE WEBSITE localhost:8000
+
+# Expose the port for the webapp
+EXPOSE WEBSITE 8000
+
